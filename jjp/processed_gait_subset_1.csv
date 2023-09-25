@@ -1,0 +1,31 @@
+import serial
+
+# UART 설정
+ser = serial.Serial(
+    port='/dev/ttyTHS1',  # Jetson Nano의 UART1 포트
+    baudrate=9600,  # 전송률 설정
+    timeout=1  # 읽기 타임아웃 설정
+)
+
+# 데이터 수신 및 파싱
+while True:
+    line = ser.readline().decode('utf-8').strip()  # 줄을 읽습니다
+    if line:  # 라인이 비어있지 않으면
+        # 데이터를 파싱합니다
+        fields = line.split('|')
+        
+        # 각 필드를 추출합니다
+        robot_time = fields[0]
+        l_hip_angle = fields[1]
+        r_hip_angle = fields[2]
+        l_hip_velocity = fields[3]
+        r_hip_velocity = fields[4]
+        l_hip_current = fields[5]
+        r_hip_current = fields[6]
+        l_hip_target_speed = fields[7]
+        r_hip_target_speed = fields[8]
+        control_mode = fields[9]
+        control_interval = fields[10]
+
+        print("Robot Time:", robot_time)
+        print("L-Hip Angle:", l_hip_angle)
