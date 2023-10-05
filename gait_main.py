@@ -40,58 +40,53 @@ def extract_fields(ser):
         }
     # return None
 
-def set_mode():
+def set_switch():
     while True:
-        mode = input("Mode: ")
-        if mode in ['1', '2', '3', '4']:
-            return mode
+        switch = input("Switch: ")
+        if switch in ['1', '2', '3', '4']:
+            return switch
         else:
             print("Invalid input.")
 
-def mode_1(data):
-    # Example algorithm for Mode 1
-    print(data['l_hip_angle'])
-    # ... (your algorithm code here)
+def switch_1(data):
 
-def mode_2(data):
-    # Example algorithm for Mode 2
-    print(data['l_hip_velocity'])
-    # ... (your algorithm code here)
+    # min,max data recording start
 
-def mode_3(data):
-    # Example algorithm for Mode 3
-    print(data['r_hip_angle'])
-    # ... (your algorithm code here)
+def switch_2(data):
 
-def mode_4(data):
-    # Example algorithm for Mode 4
-    print(data['r_hip_velocity'])
-    # ... (your algorithm code here)
+    # min,max data recording stop
+
+def switch_3(data):
+
+    # algorithm start
+def switch_4(data):
+
+    # algorithm stop
 
 # 메인 코드
 ser = initialize_serial()
 if ser:
-    mode = set_mode()  # Ask the user to set the mode.
-    print(f"Mode set to: {mode}")
+    switch = set_switch()  # Ask the user to set the switch.
+    print(f"switch set to: {switch}")
 
     data = extract_fields(ser)
     if data:
-        if mode == '1':
-            mode_1(data)
-        elif mode == '2':
-            mode_2(data)
-        elif mode == '3':
-            mode_3(data)
-        elif mode == '4':
-            mode_4(data)
+        if switch == '1':
+            switch_1(data)
+        elif switch == '2':
+            switch_2(data)
+        elif switch == '3':
+            switch_3(data)
+        elif switch == '4':
+            switch_4(data)
     else:
         print("No data received.")
 
 # 메인 코드
 ser = initialize_serial()
 if ser:
-    mode = set_mode() 
-    print(f"Mode set to: {mode}")
+    switch = set_switch() 
+    print(f"switch set to: {switch}")
 
     data = extract_fields(ser)
 
@@ -125,4 +120,4 @@ if ser:
     ser.write(l_tau)
     ser.write(r_tau)
 
-    
+
