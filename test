@@ -1,0 +1,75 @@
+import serial
+
+class RobotControl:
+    def __init__(self, port):
+        # USART 설정
+        self.ser = serial.Serial(
+            port=port,
+            baudrate=115200,
+            bytesize=serial.EIGHTBITS,
+            parity=serial.PARITY_NONE,
+            stopbits=serial.STOPBITS_ONE
+        )
+
+    # USART 데이터를 수신하는 함수
+    def receive_data(self):
+        if self.ser.isOpen():
+            return self.ser.readline().decode()
+        else:
+            print("Connection is closed.")
+            return None
+    
+    # 제어주기 변경을 위한 함수
+    def set_control_interval(self, interval):
+        if interval >= 3200:
+            command = f"CTRL_INT#{interval}|"
+            self.ser.write(command.encode())
+        else:
+            print("Interval should be 3200 or above.")
+    
+    # 좌측 Target 전류 변경을 위한 함수
+    def set_left_target_current(self, current):
+        if -1000 <= current <= 1000:
+            command = f"CURRENT?L#{current}|"
+            self.ser.write(command.encode())
+        elif current == -1001:  # 초기화
+            command = f"CURRENT?L#-1001|"
+            self.ser.write(command.encode())
+        else:
+            print("Current should be between -1000 and 1000.")
+    
+    # 우측 Target 전류 변경을 위한 함수
+    def set_right_target_current(self, current):
+        if -1000 <= current <= 1000:
+            command = f"CURRENT?R#{current}|"
+            self.ser.write(command.encode())
+        elif current == -1001:  # 초기화
+            command = f"CURRENT?R#-1001|"
+            self.ser.write(command.encode())
+        else:
+            print("Current should be between -1000 and 1000.")
+
+    # 로봇 알고리즘 (데이터를 기반으로 명령을 실행하는 부분)
+    def robot_algorithm(self):
+        # TODO: 알고리즘 구현
+        pass
+    
+    def close_connection(self):
+        if self.ser.isOpen():
+            self.ser.close()
+        else:
+            print("Connection is already closed.")
+
+
+# 사용 예제
+robot = RobotControl(port="COM3")  # 여기에 로봇과 연결된 시리얼 포트를 입력합니다.
+data = robot.receive_data()
+print(data)  # 수신받은 데이터 출력
+
+robot.set_control_interval(3300)
+robot.set_left_target_current(500)
+robot.set_right_target_current(-500)
+
+robot.robot_algorithm()
+
+robot.close_connection()
